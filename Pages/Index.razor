@@ -1,0 +1,32 @@
+﻿@page "/"
+
+@inject IStringLocalizer<Resource> R
+@inject Data.WeatherForecastService service
+<h1>@R["Greeting"]</h1>
+
+To see the bugged behaviour:
+<ol>
+    <li>Start the timer</li>
+    <li>Change the language</li>
+    <li>Go to the Counter page and play with the counter</li>
+</ol>
+
+<p>
+    Every two seconds, the language will change back to what it was when you started the timer.
+</p>
+<br/>
+<button class="btn btn-primary" @onclick="StartTimer">Start Timer</button>
+<button class="btn btn-primary" @onclick="StopTimer">Stop Timer</button>
+<p>Stopping the timer and starting it (creating a new timer instance) gives the new timer the new language setting.</p>
+@code{
+
+    private void StartTimer()
+    {
+        service.StartTimer();
+    }
+
+    private void StopTimer()
+    {
+        service.StopTimer();
+    }
+}

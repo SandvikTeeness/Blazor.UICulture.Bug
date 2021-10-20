@@ -1,0 +1,41 @@
+﻿@page "/counter"
+@inject IStringLocalizer<Resource> R
+@inject Data.WeatherForecastService service
+@implements IDisposable
+
+<h1>@R["Greeting"]</h1>
+<p>Language: @CultureInfo.CurrentCulture.NativeName</p>
+<br/>
+<p>Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<br/>
+
+<p>Observe how the language is correct when page is updated based on user interaction, and changes back to wrong language when the timer triggers the update.
+Language in the top row (and home page) is always correct.</p>
+
+@code {
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        service.TimerTickEvent += TriggerUpdate;
+    }
+
+    private void TriggerUpdate(object sender, EventArgs e)
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        service.TimerTickEvent -= TriggerUpdate;
+    }
+
+}
